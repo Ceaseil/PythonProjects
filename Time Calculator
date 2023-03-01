@@ -1,0 +1,76 @@
+# A function that can add time like ("3:00 PM", "3:10")
+# If the resulting time is the next day print ", Next Day after the time"
+week = {"Monday": 0, "Tuesday": 1, "Wednesday": 2, "Thursday": 3, "Friday": 4, "Saturday": 5, "Sunday": 6}
+week1 = list()
+for i in week:
+    week1.append(i)
+
+def add_time(current_time, added_time, start_day=None):
+    # Set up
+    current_time = current_time.split()
+    times = current_time[0].split(":")
+    hours = int(times[0])
+    minutes = int(times[1])
+    added_time = added_time.split(":")
+    day_counter = 0
+    x = None
+    # Adding the hours and minutes
+    hours = hours + int(added_time[0])
+    minutes = minutes + int(added_time[1])
+    # Checking Start Day
+    if start_day is not None:
+        x = week[start_day]
+    # Computing if minutes and hours go over 60 and 12 respectively
+    while minutes >= 60:
+        minutes = minutes - 60
+        hours += 1
+    minutes = str(minutes)
+    while hours >= 12:
+        hours = hours - 12
+        if current_time[1] == "AM":
+            current_time[1] = "PM"
+        elif current_time[1] == "PM":
+            current_time[1] = "AM"
+            # Day Counter
+            day_counter += 1
+            if start_day is not None:
+                x += 1
+    # Set 0 hour to 12 hour
+    if hours == 0:
+        hours = 12
+    hours = str(hours)
+    # Adding the 0 in front of the minute if needed
+    if len(minutes) == 1:
+        minutes = "0" + minutes
+    # Printing
+    if start_day is not None and day_counter == 0:
+        print(hours + ":" + minutes, current_time[1] + ",", week1[x])
+    elif start_day is not None and day_counter == 1:
+        print(hours + ":" + minutes, current_time[1] + ",", week1[x], "(next day)")
+    elif start_day is not None and day_counter > 1:
+        print(hours + ":" + minutes, current_time[1] + ",", week1[x], "(" + str(day_counter) + " days later)")
+    elif day_counter == 0:
+        print(hours + ":" + minutes, current_time[1])
+    elif day_counter == 1:
+        print(hours + ":" + minutes, current_time[1], "(next day)")
+    elif day_counter > 1:
+        print(hours + ":" + minutes, current_time[1], "(" + str(day_counter) + " days later)")
+
+
+add_time("3:00 PM", "3:10")
+# Returns: 6:10 PM
+
+add_time("11:30 AM", "2:32", "Monday")
+# Returns: 2:02 PM, Monday
+
+add_time("11:43 AM", "00:20")
+# Returns: 12:03 PM
+
+add_time("10:10 PM", "3:30")
+# Returns: 1:40 AM (next day)
+
+add_time("11:43 PM", "24:20", "Tuesday")
+# Returns: 12:03 AM, Thursday (2 days later)
+
+add_time("6:30 PM", "205:12")
+# Returns: 7:42 AM (9 days later)
