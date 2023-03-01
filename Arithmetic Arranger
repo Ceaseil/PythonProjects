@@ -1,0 +1,48 @@
+space = " "
+
+
+# formatter
+def add_spaces(number):
+    if len(number) == 1:
+        number = space * 4 + number
+    if len(number) == 2:
+        number = space * 3 + number
+    if len(number) == 3:
+        number = space * 2 + number
+    if len(number) == 4:
+        number = space + number
+    return number
+
+
+def arithmetic_arranger(numlist, answer=False):
+    problems = 0
+    for numbers in numlist:
+        j = numbers.split()
+#problems counter
+        problems = problems + 1
+        if problems > 5:
+            print("Too many problems")
+            exit()
+# digit verifier
+        if not j[0].isdigit or not j[2].isdigit():
+            print("Error: Numbers must only contain digits")
+            exit()
+# digit length checker
+        if int(len(j[0])) > 4 or int(len(j[2])) > 4:
+            print("Error: Numbers cannot be more than four digits")
+            exit()
+# operations
+        if j[1] == "+":
+            results = int(j[0]) + int(j[2])
+        elif j[1] == "-":
+            results = int(j[0]) - int(j[2])
+        else:
+            print("Error: Operator must be '+' or '-'")
+            exit()
+        b = add_spaces(str(results))
+        y = add_spaces(j[0])
+        z = add_spaces(j[2])
+        if answer is True:
+            print(space + y + "\n" + j[1] + z + "\n" + "______" + "\n" + space + b + "\n")
+        else:
+            print(space + y + "\n" + j[1] + z + "\n" + "______" + "\n")
